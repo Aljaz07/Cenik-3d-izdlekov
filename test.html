@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cenik 3d izdelkov</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1c1c1c, #2a2a2a, #1f1f1f);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      color: white;
+      margin: 0;
+      padding: 2rem;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    h1 {
+      text-align: center;
+      font-size: 3rem;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+      font-family: 'Orbitron', sans-serif;
+    }
+    table {
+      width: 90%;
+      margin: 2rem auto;
+      border-collapse: collapse;
+      background-color: #2e2e2e;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      color: white;
+    }
+    th, td {
+      padding: 12px 20px;
+      border: 1px solid #444;
+      text-align: left;
+    }
+    th {
+      background-color: #009688;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #3a3a3a;
+    }
+    .order-button {
+      display: block;
+      width: 200px;
+      margin: 2rem auto;
+      padding: 10px 20px;
+      background-color: #009688;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+    }
+    .contact {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 16px;
+    }
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 3rem;
+    }
+    .gallery-item {
+      text-align: center;
+      width: 180px;
+      background-color: #2e2e2e;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+    .gallery-item img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .gallery-item p {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .side-text {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      width: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      pointer-events: none;
+      z-index: 1000;
+    }
+    .side-text.left {
+      left: 0;
+    }
+    .side-text.right {
+      right: 0;
+    }
+    .side-text .marquee {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-size: 1rem;
+      font-weight: bold;
+      color: #aaffee;
+      text-shadow: 0 0 5px #00ffff;
+      animation: glowText 2s ease-in-out infinite alternate;
+      font-family: 'Orbitron', sans-serif;
+    }
+    @keyframes glowText {
+      0% { text-shadow: 0 0 5px #00ffff; }
+      100% { text-shadow: 0 0 20px #00ffff; }
+    }
+    .pdf-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1001;
+      background: #009688;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    async function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const table = document.querySelector("table");
+      const canvas = await html2canvas(table, { scale: 2 });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF();
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pageWidth;
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      pdf.addImage(imgData, "PNG", 0, 20, pdfWidth, pdfHeight);
+      pdf.save("cenik.pdf");
+    }
+  </script>
+</head>
+<body>
+  <button class="pdf-button" onclick="downloadPDF()">Prenesi PDF</button>
+  <div class="side-text left">
+    <div class="marquee">🤟3D IZDELKI SO ZAKON🔥</div>
+  </div>
+  <div class="side-text right">
+    <div class="marquee">🤟3D IZDELKI SO ZAKON🔥</div>
+  </div>
+  <h1>CENIK 3D IZDELKOV IN STORITEV</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Slika</th>
+        <th>Izdelek</th>
+        <th>Opis</th>
+        <th>Cena (€)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><img src="https://via.placeholder.com/80" alt="Feeder X-Pro"></td>
+        <td>Feeder X-Pro</td>
+        <td>Napreden feeder s samodejno sprostitvijo in prilagodljivo utežjo</td>
+        <td>9.90</td>
+      </tr>
+      <tr>
+        <td><img src="https://via.placeholder.com/80" alt="Stojalo za telefon"></td>
+        <td>Stojalo za telefon</td>
+        <td>Univerzalno stojalo z logotipom po izbiri</td>
+        <td>6.50</td>
+      </tr>
+      <tr>
+        <td><img src="https://via.placeholder.com/80" alt="Organizator kablov"></td>
+        <td>Organizator kablov</td>
+        <td>Modularni sistem za urejanje kablov na mizi</td>
+        <td>4.00</td>
+      </tr>
+      <tr>
+        <td><img src="https://via.placeholder.com/80" alt="Mini škatlica za trnke"></td>
+        <td>Mini škatlica za trnke</td>
+        <td>Žepna škatlica s predelki za ribiške trnke in drobnarije</td>
+        <td>5.00</td>
+      </tr>
+    </tbody>
+  </table>
+  <a href="mailto:aljaz.freelance@gmail.com;rebeka.miha2024@gmail.com?subject=Naročilo 3D izdelka." class="order-button">Naroči zdaj</a>
+  <div class="gallery">
+    <div class="gallery-item">
+      <img src="https://via.placeholder.com/150" alt="Feeder X-Pro">
+      <p>Feeder X-Pro<br><strong>9.90 €</strong></p>
+    </div>
+    <div class="gallery-item">
+      <img src="https://via.placeholder.com/150" alt="Stojalo za telefon">
+      <p>Stojalo za telefon<br><strong>6.50 €</strong></p>
+    </div>
+    <div class="gallery-item">
+      <img src="https://via.placeholder.com/150" alt="Organizator kablov">
+      <p>Organizator kablov<br><strong>4.00 €</strong></p>
+    </div>
+    <div class="gallery-item">
+      <img src="https://via.placeholder.com/150" alt="Mini škatlica za trnke">
+      <p>Mini škatlica za trnke<br><strong>5.00 €</strong></p>
+    </div>
+  </div>
+  <div class="contact">
+    <p><strong>Kontaktni podatki:</strong></p>
+    <p>Email: aljaz.freelance@gmail.com</p>
+    <p>Telefon: 041 699 697 ali 070 304 983</p>
+  </div>
+</body>
+</html>
+ 
