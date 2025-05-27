@@ -141,13 +141,11 @@
       const { jsPDF } = window.jspdf;
       const table = document.querySelector("table");
       const canvas = await html2canvas(table, { scale: 2 });
-      const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF();
       const pageWidth = pdf.internal.pageSize.getWidth();
       const imgProps = pdf.getImageProperties(imgData);
       const pdfWidth = pageWidth;
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      pdf.addImage(imgData, "PNG", 0, 20, pdfWidth, pdfHeight);
       pdf.save("cenik.pdf");
     }
   </script>
@@ -175,54 +173,54 @@
         <td><img src="https://media.printables.com/media/prints/263953/images/4431566_0bddaa50-0cff-4182-9932-8de1fd5e58f6/thumbs/inside/1600x1200/jpg/20230813_165026.webp" alt="Pokrovček za pločevinko - M" width="150"></td>
         <td>Pokrovček za pločevinko - Veliki</td>
         <td>Primeren za velike pločevinke. Možnost različnih dizajnov.</td>
-        <td>2.00€</td>
+        <td>2.00</td>
       </tr>
       <tr>
         <td><img src="https://media.printables.com/media/prints/966471/images/7379997_af53137f-4f55-4f0f-a684-e2cfc9bff74e_3e11d1fd-eb22-4267-b059-cca930ad02b6/thumbs/inside/1600x1200/jpg/20240805_121625.webp" alt="Pokrovček za pločevinko - S" width="150"></td>
         <td>Pokrovček za pločevinko - Mali</td>
         <td>Primeren za male pločevinke 330 ml! Ratlični dizajni!</td>
-        <td>1.50€<td>
-        </tr>
+        <td>1.50</td>
+      </tr>
       <tr>
-        <td><img src="https:/media.printables.com/media/prints/1101273/images/8611377_7f2f216c-6b75-4009-ae7d-a7e1920c5bbb_cf795f6f-97a4-41a6-9994-aa3cad11f8c5/thumbs/inside/1600x1200/jpg/titelbildv5.webp" alt="Pokrovček za silikonske tube" width="200"></td>
+        <td><img src="https://media.printables.com/media/prints/1101273/images/8611377_7f2f216c-6b75-4009-ae7d-a7e1920c5bbb_cf795f6f-97a4-41a6-9994-aa3cad11f8c5/thumbs/inside/1600x1200/jpg/titelbildv5.webp" alt="Pokrovček za silikonske tube" width="200"></td>
         <td>Pokrovček za silikonske tube</td>
         <td>Primeren za vse silikonske in ostale tube, ki imajo navoj.</td>
-        <td>1.50€</td>
+        <td>1.50</td>
       </tr>
       <tr>
         <td><img src="https://media.printables.com/media/prints/150320/images/1416451_41f06055-2d48-4811-aa5f-c84972d9172a/thumbs/inside/1600x1200/png/large_display_title_03_1_150320.webp" alt="Obesek za ključe - QR" width="200"></td>
         <td>Obesek za ključe z QR kodo</td>
         <td>Primerno za hitro skenirajne in iskanje spletnih strani ali socialnih omrežij.</td>
-        <td>2.50€</td>
+        <td>2.50</td>
       </tr>
       <tr>
         <td><img src="https://media.printables.com/media/prints/884162/images/6775639_30187949-c761-437d-90ef-1fbb14cd6b63_03642dd8-92d0-4468-ad27-9c00ba45f677/tempimage3xpshr.gif" alt="Obeski za ključe" width="200"></td>
          <td>Obeski za ključe</td>
         <td>Različni obeski za ključe, izdelava po željah, lahko so logotipi in podobno.</td>
-        <td>2.50€</td>
+        <td>2.50</td>
       </tr>
-        <td><img src="https://media.printables.com/media/prints/213234/images/1954477_d2d049f2-8be6-453a-a46b-ff3e913c175b/thumbs/inside/1600x1200/jpg/img_20220525_112749129_hdr.webp" alt="Ovitek za telefon" width="200"></td>
+        <td><img src="https://media.printables.com/media/prints/213234/images/1954487_77e3a154-daf8-4355-98cf-685c61bfd904/thumbs/inside/1600x1200/jpg/img_20220525_111914640_hdr.webp" alt="Ovitek za telefon" width="200"  ></td>
         <td>Ovitek za telefon - Mali</td>
         <td>Ovitek primeren za vse telefone, ki jim dimenija zaslona ne presega 5,5". </td>
-        <td>4.00€</td>
+        <td>4.00</td>
       </tr>
        <tr>
         <td><img src="https://media.printables.com/media/prints/316760/images/4007504_183b546e-c067-4f92-a85d-038acce84238/thumbs/inside/1600x1200/jpg/20221115_125254.webp" alt="Ovitek za telefon" width="200"></td>
         <td>Ovitek za telefon - Srednji</td>
         <td>Ovitek primeren za vse telefone, ki jim dimenija zaslona ne presega 6,7". </td>
-        <td>6.00€</td>
+        <td>6.00</td>
       </tr>
        <tr>
         <td><img src="https://pic2-cdn.creality.com/comp/model/1a0719018a571cc40e28eaaebe595f9d.webp?x-oss-process=image/resize,w_700/ignore-error,1" alt="Ovitek za telefon" width="200"></td>
         <td>Ovitek za telefon - Veliki</td>
         <td>Ovitek primeren za vse telefone, ki jim dimenija zaslona presega 6,7". </td>
-        <td>8.00€</td>
+        <td>8.00</td>
       </tr>
         <tr>
-        <td><img src="https://pic2-cdn.creality.com/comp/model/58175ec0b366d28219253a84c1cde5ba.webp?x-oss-process=image/resize,w_700/ignore-error,1" alt="Dodatki za ovitek" width="200"></td>
+        <td><img src="https://pic2-cdn.creality.com/comp/model/e8d8a4692b36445523b63e81545eb796.webp?x-oss-process=image/resize,w_700/ignore-error,1" alt="Dodatki za ovitek" width="200"></td>
         <td>Dodatki za ovitek</td>
         <td>Dodatki in vdelava ter dodelava ovitka za vse dimenzije.</td>
-        <td>1.00€</td>
+        <td>1.00</td>
       </tr>
     </tbody>
   </table>
