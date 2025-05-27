@@ -146,6 +146,7 @@
       const imgProps = pdf.getImageProperties(imgData);
       const pdfWidth = pageWidth;
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      pdf.addImage(imgData, "PNG", 0, 20, pdfWidth, pdfHeight);
       pdf.save("cenik.pdf");
     }
   </script>
