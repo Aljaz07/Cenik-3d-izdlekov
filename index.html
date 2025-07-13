@@ -1,240 +1,141 @@
 <!DOCTYPE html>
 <html lang="sl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cenik 3d izdelkov</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>3D Izdelki - Cenik</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    /* 3D efekt za naslove */
+    .text-3d {
+      color: #0ea5e9; /* modra */
+      text-shadow:
+        1px 1px 0 #0369a1,
+        2px 2px 0 #0c4a6e,
+        3px 3px 0 #083344;
+    }
+    /* Animirano ozadje */
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #1c1c1c, #2a2a2a, #1f1f1f);
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #3b82f6 100%);
       background-size: 400% 400%;
       animation: gradientBG 15s ease infinite;
-      color: white;
-      margin: 0;
-      padding: 2rem;
     }
     @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    h1 {
-      text-align: center;
-      font-size: 3rem;
-      text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
-      font-family: 'Orbitron', sans-serif;
-    }
-    table {
-      width: 90%;
-      margin: 2rem auto;
-      border-collapse: collapse;
-      background-color: #2e2e2e;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      color: white;
-    }
-    th, td {
-      padding: 12px 20px;
-      border: 1px solid #444;
-      text-align: left;
-    }
-    th {
-      background-color: #009688;
-      color: white;
-    }
-    tr:nth-child(even) {
-      background-color: #3a3a3a;
-    }
-    .order-button {
-      display: block;
-      width: 200px;
-      margin: 2rem auto;
-      padding: 10px 20px;
-      background-color: #009688;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      text-align: center;
-      text-decoration: none;
-    }
-    .contact {
-      text-align: center;
-      margin-top: 3rem;
-      font-size: 16px;
-    }
-    .gallery {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-      margin-top: 3rem;
-    }
-    .gallery-item {
-     flex: 1 1 30%;
-     min-width: 150px;
-     max-width: 200px;
-     text-align: center;
-     background-color: #2e2e2e;
-     padding: 10px;
-     border-radius: 10px;
-     box-shadow: 0 0 10px rgba(0,0,0,0.5);
-   }
-    .gallery-item img {
-      width: 100%;
-      border-radius: 8px;
-    }
-    .gallery-item p {
-      margin-top: 10px;
-      font-size: 14px;
-    }
-    .side-text {
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      width: 30px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      pointer-events: none;
-      z-index: 1000;
-    }
-    .side-text.left {
-      left: 0;
-    }
-    .side-text.right {
-      right: 0;
-    }
-    .side-text .marquee {
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-      font-size: 1rem;
-      font-weight: bold;
-      color: #aaffee;
-      text-shadow: 0 0 5px #00ffff;
-      animation: glowText 2s ease-in-out infinite alternate;
-      font-family: 'Orbitron', sans-serif;
-    }
-    @keyframes glowText {
-      0% { text-shadow: 0 0 5px #00ffff; }
-      100% { text-shadow: 0 0 20px #00ffff; }
-    }
-    .pdf-button {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 1001;
-      background: #009688;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
-      cursor: pointer;
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
     }
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
-async function downloadPDF() {
-  const { jsPDF } = window.jspdf;
-  const table = document.querySelector("table");
-  const images = table.querySelectorAll("img");
-  images.forEach(img => img.style.display = "none");
-  const canvas = await html2canvas(table, { scale: 2 });
-  const imgData = canvas.toDataURL("image/png");
-  const pdf = new jsPDF();
-  const pageWidth = pdf.internal.pageSize.getWidth();
-  const imgProps = pdf.getImageProperties(imgData);
-  const pdfWidth = pageWidth;
-  const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-  pdf.addImage(imgData, "PNG", 0, 20, pdfWidth, pdfHeight);
-  pdf.save("cenik.pdf");
-  images.forEach(img => img.style.display = "");
-}
+    function toggleTheme() {
+      document.documentElement.classList.toggle('dark');
+    }
   </script>
 </head>
-<body>
-  <button class="pdf-button" onclick="downloadPDF()">Prenesi PDF</button>
-  <div class="side-text left">
-    <div class="marquee">🤟3D IZDELKI SO ZAKON🔥</div>
-  </div>
-  <div class="side-text right">
-    <div class="marquee">🤟3D IZDELKI SO ZAKON🔥</div>
-  </div>
-  <h1>CENIK 3D IZDELKOV IN STORITEV</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>Slika</th>
-        <th>Izdelek</th>
-        <th>Opis</th>
-        <th>Cena (€)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><img src="https://media.printables.com/media/prints/263953/images/4431566_0bddaa50-0cff-4182-9932-8de1fd5e58f6/thumbs/inside/1600x1200/jpg/20230813_165026.webp" alt="Pokrovček za pločevinko - M" width="150"></td>
-        <td>Pokrovček za pločevinke – veliki</td>
-        <td>Primeren za večje pločevinke (500 ml). Na voljo v različnih dizajnih in oblikah. Ščiti pred žuželkami in pred razlitjem.</td>
-        <td>2.00€</td>
-      </tr>
-      <tr>
-        <td><img src="https://media.printables.com/media/prints/966471/images/7379997_af53137f-4f55-4f0f-a684-e2cfc9bff74e_3e11d1fd-eb22-4267-b059-cca930ad02b6/thumbs/inside/1600x1200/jpg/20240805_121625.webp" alt="Pokrovček za pločevinko - S" width="150"></td>
-        <td>Pokrovček za pločevinke - mali</td>
-        <td>Primeren za manjše pločevinke (330 ml ali 250 ml). Na voljo v različnih dizajnih in oblikah. Ščiti pred žuželkami in pred razlitjem.</td>
-        <td>1.50€</td>
-      </tr>
-      <tr>
-        <td><img src="https://media.printables.com/media/prints/1101273/images/8611377_7f2f216c-6b75-4009-ae7d-a7e1920c5bbb_cf795f6f-97a4-41a6-9994-aa3cad11f8c5/thumbs/inside/1600x1200/jpg/titelbildv5.webp" alt="Pokrovček za silikonske tube" width="200"></td>
-        <td>Pokrovček za silikonske tube</td>
-        <td>Primeren za vse tube z navojem. Pokrovček, ki preprečuje izsušitev vsebine.</td>
-        <td>1.50€</td>
-      </tr>
-      <tr>
-        <td><img src="https://media.printables.com/media/prints/150320/images/1416451_41f06055-2d48-4811-aa5f-c84972d9172a/thumbs/inside/1600x1200/png/large_display_title_03_1_150320.webp" alt="Obesek za ključe - QR" width="200"></td>
-        <td>Obesek za ključe z QR kodo</td>
-        <td>Primerno za hitro skenirajne in enostavno iskanje spletnih strani ali družbenih omrežij.</td>
-        <td>2.50€</td>
-      </tr>
-      <tr>
-        <td><img src="https://media.printables.com/media/prints/884162/images/6775639_30187949-c761-437d-90ef-1fbb14cd6b63_03642dd8-92d0-4468-ad27-9c00ba45f677/tempimage3xpshr.gif" alt="Obeski za ključe" width="200"></td>
-         <td>Obeski za ključe</td>
-        <td>Različni obeski za ključe, izdelava po želji - lahko vključuje logotipe in druge motive.</td>
-        <td>2.50€</td>
-      </tr>
-        <td><img src="https://media.printables.com/media/prints/213234/images/1954487_77e3a154-daf8-4355-98cf-685c61bfd904/thumbs/inside/1600x1200/jpg/img_20220525_111914640_hdr.webp" alt="Ovitek za telefon" width="200"  ></td>
-        <td>Ovitek za telefon - mali</td>
-        <td>Primeren za vse telefone z diagonalo zaslona do 5,5". (do 13,97 cm ali 139,7 mm)</td>
-        <td>4.00€</td>
-      </tr>
-       <tr>
-        <td><img src="https://media.printables.com/media/prints/316760/images/4007504_183b546e-c067-4f92-a85d-038acce84238/thumbs/inside/1600x1200/jpg/20221115_125254.webp" alt="Ovitek za telefon" width="200"></td>
-        <td>Ovitek za telefon - Srednji</td>
-        <td>Primeren za vse telefone z diagonalo zaslona do 6,7". (do 15,24 cm ali 152,4 mm)</td>
-        <td>6.00€</td>
-      </tr>
-       <tr>
-        <td><img src="https://pic2-cdn.creality.com/comp/model/1a0719018a571cc40e28eaaebe595f9d.webp?x-oss-process=image/resize,w_700/ignore-error,1" alt="Ovitek za telefon" width="200"></td>
-        <td>Ovitek za telefon - Veliki</td>
-        <td>Primeren za vse telefone z diagonalo zaslona nad 6,7". (nad 15,24 cm ali 152,4 mm)</td>
-        <td>8.00€</td>
-      </tr>
-        <tr>
-        <td><img src="https://pic2-cdn.creality.com/comp/model/e8d8a4692b36445523b63e81545eb796.webp?x-oss-process=image/resize,w_700/ignore-error,1" alt="Dodatki za ovitek" width="200"></td>
-        <td>Dodatki za ovitek</td>
-        <td>Različni dodatki in možnosti prilagoditve ovitka za vse dimenzije.</td>
-        <td>1.00€</td>
-      </tr>
-    </tbody>
-  </table>
-  <a href="mailto:aljaz.freelance@gmail.com;rebeka.miha2024@gmail.com?subject=Naročilo 3D izdelka." class="order-button">Naroči zdaj</a>
-  <div class="contact">
-    <p><strong>Kontaktni podatki:</strong></p>
-    <p>Email: aljaz.freelance@gmail.com</p>
-    <p>Telefon: 041 699 697 ali 070 304 983</p>
-  </div>
+<body class="min-h-screen text-gray-100 dark:bg-gray-900 dark:text-gray-300 transition-colors">
+
+  <header class="flex justify-between items-center p-6 bg-blue-900 bg-opacity-80 shadow-lg sticky top-0 z-50">
+    <h1 class="text-4xl font-extrabold text-3d select-none">3D Izdelki</h1>
+    <button
+      onclick="toggleTheme()"
+      class="px-4 py-2 rounded bg-blue-500 hover:bg-blue-600 transition"
+      aria-label="Preklop teme"
+    >
+      Preklopi temo
+    </button>
+  </header>
+
+  <main class="max-w-7xl mx-auto p-6">
+    <section class="mb-10">
+      <h2 class="text-3xl font-bold mb-4 text-center text-3d select-none">
+        Cenik in predstavitev izdelkov
+      </h2>
+      <p class="text-center max-w-2xl mx-auto mb-6 leading-relaxed">
+        Tukaj najdete širok izbor 3D izdelkov z njihovimi opisi, cenami in barvnimi variacijami. Kliknite na posamezni izdelek za več informacij in povpraševanje.
+      </p>
+    </section>
+
+    <!-- Grid kartic izdelkov -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      
+      <!-- Izdelek 1 -->
+      <article
+        class="bg-blue-800 bg-opacity-70 rounded-xl shadow-lg hover:shadow-2xl transition p-4 flex flex-col"
+      >
+        <img
+          src="https://via.placeholder.com/300x200"
+          alt="Izdelek 1"
+          class="rounded-lg mb-4 object-cover h-48 w-full"
+          loading="lazy"
+        />
+        <h3 class="text-xl font-semibold mb-2">Izdelek 1</h3>
+        <p class="flex-grow text-gray-300 mb-4">
+          Eleganten 3D model z možnostjo različnih barv in dizajnov.
+        </p>
+        <div class="mt-auto">
+          <p class="font-bold text-lg mb-2">Cena: 99 €</p>
+          <a
+            href="mailto:tvojemail@example.com?subject=Povpraševanje za Izdelek 1&body=Pozdravljeni,%0D%0AZanima me Izdelek 1.%0D%0ALep pozdrav."
+            class="block text-center bg-blue-500 hover:bg-blue-600 text-white rounded py-2 transition"
+            >Povprašaj</a
+          >
+        </div>
+      </article>
+
+      <!-- Izdelek 2 -->
+      <article
+        class="bg-blue-800 bg-opacity-70 rounded-xl shadow-lg hover:shadow-2xl transition p-4 flex flex-col"
+      >
+        <img
+          src="https://via.placeholder.com/300x200"
+          alt="Izdelek 2"
+          class="rounded-lg mb-4 object-cover h-48 w-full"
+          loading="lazy"
+        />
+        <h3 class="text-xl font-semibold mb-2">Izdelek 2</h3>
+        <p class="flex-grow text-gray-300 mb-4">
+          Moderna 3D figurica z unikatnimi detajli in možnostjo prilagoditve.
+        </p>
+        <div class="mt-auto">
+          <p class="font-bold text-lg mb-2">Cena: 149 €</p>
+          <a
+            href="mailto:tvojemail@example.com?subject=Povpraševanje za Izdelek 2&body=Pozdravljeni,%0D%0AZanima me Izdelek 2.%0D%0ALep pozdrav."
+            class="block text-center bg-blue-500 hover:bg-blue-600 text-white rounded py-2 transition"
+            >Povprašaj</a
+          >
+        </div>
+      </article>
+
+      <!-- Izdelek 3 -->
+      <article
+        class="bg-blue-800 bg-opacity-70 rounded-xl shadow-lg hover:shadow-2xl transition p-4 flex flex-col"
+      >
+        <img
+          src="https://via.placeholder.com/300x200"
+          alt="Izdelek 3"
+          class="rounded-lg mb-4 object-cover h-48 w-full"
+          loading="lazy"
+        />
+        <h3 class="text-xl font-semibold mb-2">Izdelek 3</h3>
+        <p class="flex-grow text-gray-300 mb-4">
+          Unikatna 3D skulptura z možnostjo izbire različnih materialov.
+        </p>
+        <div class="mt-auto">
+          <p class="font-bold text-lg mb-2">Cena: 79 €</p>
+          <a
+            href="mailto:tvojemail@example.com?subject=Povpraševanje za Izdelek 3&body=Pozdravljeni,%0D%0AZanima me Izdelek 3.%0D%0ALep pozdrav."
+            class="block text-center bg-blue-500 hover:bg-blue-600 text-white rounded py-2 transition"
+            >Povprašaj</a
+          >
+        </div>
+      </article>
+
+      <!-- Dodaj še ostale izdelke po istem vzorcu -->
+    </section>
+  </main>
+
+  <footer class="text-center p-6 mt-16 text-gray-400">
+    &copy; 2025 Tvoja 3D Produkcija. Vse pravice pridržane.
+  </footer>
 </body>
 </html>
- 
