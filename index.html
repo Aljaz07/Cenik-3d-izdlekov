@@ -104,6 +104,19 @@
       background-color: rgba(21, 128, 61, 0.9);
     }
 
+    /* Barvni krogci */
+    .color-circle {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+    }
+    .color-circle.selected {
+      border-color: white;
+    }
+
     /* Košarica spodaj desno */
     #cart {
       position: fixed;
@@ -178,26 +191,6 @@
     #cart-send:hover {
       background-color: #2563eb;
     }
-
-    /* Barvni krogi za izbiro */
-    .color-options {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 12px;
-      justify-content: center;
-    }
-    .color-circle {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      border: 2px solid transparent;
-      cursor: pointer;
-      transition: border-color 0.3s ease;
-      user-select: none;
-    }
-    .color-circle.selected {
-      border-color: white;
-    }
   </style>
 </head>
 <body class="min-h-screen">
@@ -215,18 +208,15 @@
       <h2 class="text-xl font-bold mb-2">Izdelek 1</h2>
       <p class="mb-4">Eleganten 3D model z možnostjo barv in dizajnov.</p>
       <p class="font-semibold mb-4">Cena: 99 €</p>
-
-      <!-- Barvni krogi -->
-      <div class="color-options" data-selected-color="Modra">
-        <div class="color-circle bg-blue-500" title="Modra" onclick="selectColor(this, 1, 'Modra')" style="border-color: white;"></div>
-        <div class="color-circle bg-red-500" title="Rdeča" onclick="selectColor(this, 1, 'Rdeča')"></div>
-        <div class="color-circle bg-green-500" title="Zelena" onclick="selectColor(this, 1, 'Zelena')"></div>
-        <div class="color-circle bg-yellow-400" title="Rumena" onclick="selectColor(this, 1, 'Rumena')"></div>
+      <!-- Barvni krogci -->
+      <div class="color-picker mt-2 flex gap-2">
+        <button class="color-circle" style="background-color: #ef4444;" title="Rdeča" onclick="selectColor(1, 'Rdeča', '#ef4444')"></button>
+        <button class="color-circle" style="background-color: #3b82f6;" title="Modra" onclick="selectColor(1, 'Modra', '#3b82f6')"></button>
+        <button class="color-circle" style="background-color: #10b981;" title="Zelena" onclick="selectColor(1, 'Zelena', '#10b981')"></button>
+        <button class="color-circle" style="background-color: #fbbf24;" title="Rumena" onclick="selectColor(1, 'Rumena', '#fbbf24')"></button>
       </div>
-
       <div class="card-footer">
-        <a href="izdelek1.html" class="btn">Več o izdelku</a>
-        <button class="btn-add" onclick="addToCart(1, 'Izdelek 1', 99)">+</button>
+        <button class="btn-add" onclick="addToCart(1, 'Izdelek 1', 99)">+ Dodaj v košarico</button>
       </div>
     </div>
 
@@ -234,24 +224,37 @@
     <div class="glass product-card p-6" data-product-id="2">
       <img src="https://via.placeholder.com/300x200?text=Izdelek+2" alt="Izdelek 2" loading="lazy" />
       <h2 class="text-xl font-bold mb-2">Izdelek 2</h2>
-      <p class="mb-4">Moderna 3D figurica z unikatnimi detajli.</p>
-      <p class="font-semibold mb-4">Cena: 149 €</p>
-
-      <!-- Barvni krogi -->
-      <div class="color-options" data-selected-color="Modra">
-        <div class="color-circle bg-blue-500" title="Modra" onclick="selectColor(this, 2, 'Modra')" style="border-color: white;"></div>
-        <div class="color-circle bg-red-500" title="Rdeča" onclick="selectColor(this, 2, 'Rdeča')"></div>
-        <div class="color-circle bg-green-500" title="Zelena" onclick="selectColor(this, 2, 'Zelena')"></div>
-        <div class="color-circle bg-yellow-400" title="Rumena" onclick="selectColor(this, 2, 'Rumena')"></div>
+      <p class="mb-4">Visoko kakovostni 3D izdelek z možnostjo izbire barve.</p>
+      <p class="font-semibold mb-4">Cena: 129 €</p>
+      <div class="color-picker mt-2 flex gap-2">
+        <button class="color-circle" style="background-color: #ef4444;" title="Rdeča" onclick="selectColor(2, 'Rdeča', '#ef4444')"></button>
+        <button class="color-circle" style="background-color: #3b82f6;" title="Modra" onclick="selectColor(2, 'Modra', '#3b82f6')"></button>
+        <button class="color-circle" style="background-color: #10b981;" title="Zelena" onclick="selectColor(2, 'Zelena', '#10b981')"></button>
+        <button class="color-circle" style="background-color: #fbbf24;" title="Rumena" onclick="selectColor(2, 'Rumena', '#fbbf24')"></button>
       </div>
-
       <div class="card-footer">
-        <a href="izdelek2.html" class="btn">Več o izdelku</a>
-        <button class="btn-add" onclick="addToCart(2, 'Izdelek 2', 149)">+</button>
+        <button class="btn-add" onclick="addToCart(2, 'Izdelek 2', 129)">+ Dodaj v košarico</button>
       </div>
     </div>
 
-    <!-- Nadaljuj z ostalimi izdelki ... -->
+    <!-- Izdelek 3 -->
+    <div class="glass product-card p-6" data-product-id="3">
+      <img src="https://via.placeholder.com/300x200?text=Izdelek+3" alt="Izdelek 3" loading="lazy" />
+      <h2 class="text-xl font-bold mb-2">Izdelek 3</h2>
+      <p class="mb-4">Moderen dizajn s personalizacijo barv.</p>
+      <p class="font-semibold mb-4">Cena: 149 €</p>
+      <div class="color-picker mt-2 flex gap-2">
+        <button class="color-circle" style="background-color: #ef4444;" title="Rdeča" onclick="selectColor(3, 'Rdeča', '#ef4444')"></button>
+        <button class="color-circle" style="background-color: #3b82f6;" title="Modra" onclick="selectColor(3, 'Modra', '#3b82f6')"></button>
+        <button class="color-circle" style="background-color: #10b981;" title="Zelena" onclick="selectColor(3, 'Zelena', '#10b981')"></button>
+        <button class="color-circle" style="background-color: #fbbf24;" title="Rumena" onclick="selectColor(3, 'Rumena', '#fbbf24')"></button>
+      </div>
+      <div class="card-footer">
+        <button class="btn-add" onclick="addToCart(3, 'Izdelek 3', 149)">+ Dodaj v košarico</button>
+      </div>
+    </div>
+
+    <!-- Dodatne izdelke lahko enako dodaš tukaj -->
 
   </main>
 
@@ -259,37 +262,39 @@
   <div id="cart" style="display:none;">
     <h2>Košarica</h2>
     <div id="cart-items"></div>
-    <div id="cart-total"></div>
+    <p id="cart-total"></p>
     <button id="cart-send" onclick="sendOrder()">Pošlji povpraševanje</button>
   </div>
 
   <script>
-    const cart = {};
+    // Objekt za shranjevanje barv po izdelku
+    const selectedColors = {};
 
-    function selectColor(element, productId, colorName) {
-      // Odstrani "selected" iz ostalih krogcev istega izdelka
-      const container = element.parentElement;
-      container.querySelectorAll('.color-circle').forEach(c => c.classList.remove('selected'));
-
-      // Dodaj "selected" na kliknjen krog
-      element.classList.add('selected');
-
-      // Shrani izbrano barvo v atribut containerja
-      container.dataset.selectedColor = colorName;
+    function selectColor(productId, colorName, colorHex) {
+      selectedColors[productId] = { name: colorName, hex: colorHex };
+      updateColorSelectionUI(productId);
     }
 
+    function updateColorSelectionUI(productId) {
+      const container = document.querySelector(`.product-card[data-product-id="${productId}"] .color-picker`);
+      if (!container) return;
+      container.querySelectorAll('.color-circle').forEach(btn => {
+        btn.classList.remove('selected');
+        if (btn.title === selectedColors[productId].name) {
+          btn.classList.add('selected');
+        }
+      });
+    }
+
+    const cart = {};
+
     function addToCart(id, name, price) {
-      // Najdi izbrano barvo
-      const productCard = document.querySelector(`.product-card[data-product-id="${id}"]`);
-      const colorOptions = productCard.querySelector('.color-options');
-      const selectedColor = colorOptions.dataset.selectedColor || 'Ni izbrane barve';
-
-      const key = id + '|' + selectedColor; // unikaten ključ glede na barvo
-
+      const color = selectedColors[id]?.name || 'Brez barve';
+      const key = id + '|' + color;
       if(cart[key]) {
         cart[key].qty++;
       } else {
-        cart[key] = { name, price, qty: 1, color: selectedColor };
+        cart[key] = { name, price, qty: 1, color };
       }
       updateCartUI();
     }
@@ -323,7 +328,7 @@
         itemDiv.classList.add('cart-item');
 
         const span = document.createElement('span');
-        span.textContent = `${item.name} (${item.color}) x${item.qty} — ${item.price * item.qty} €`;
+        span.textContent = `${item.name} (${item.color}) x${item.qty} — ${ (item.price * item.qty).toFixed(2) } €`;
 
         const btnRemove = document.createElement('button');
         btnRemove.textContent = '×';
@@ -340,28 +345,19 @@
 
     function sendOrder() {
       if(Object.keys(cart).length === 0) {
-        alert('Košarica je prazna.');
+        alert('Košarica je prazna!');
         return;
       }
-      let body = 'Pozdravljeni,%0D%0A%0D%0ARad/a bi oddal/a povpraševanje za naslednje 3D izdelke:%0D%0A';
-
+      let mailBody = 'Pozdravljeni,%0D%0A%0D%0APošiljam povpraševanje za naslednje izdelke:%0D%0A';
       for(const key in cart) {
         const item = cart[key];
-        body += `- ${item.name} (${item.color}) x${item.qty} (Cena na enoto: ${item.price} €)%0D%0A`;
+        mailBody += `- ${item.name} (${item.color}) x${item.qty} - Cena na enoto: ${item.price} €%0D%0A`;
       }
-      body += '%0D%0ASkupna cena: ' + Object.values(cart).reduce((sum, i) => sum + i.price * i.qty, 0).toFixed(2) + ' €%0D%0A%0D%0ALep pozdrav,%0D%0A[Vaše ime]';
+      mailBody += '%0D%0AHvala in lep pozdrav,%0D%0A[Ime in Priimek]';
 
-      window.location.href = `mailto:tvojemail@example.com?subject=Povpraševanje za 3D izdelke&body=${body}`;
+      const mailTo = 'info@tvoja-domena.si';
+      window.location.href = `mailto:${mailTo}?subject=Povpraševanje za 3D izdelke&body=${mailBody}`;
     }
-
-    // Privzeta barva za krogce (da je ena vedno izbrana)
-    document.querySelectorAll('.color-options').forEach(container => {
-      const firstCircle = container.querySelector('.color-circle');
-      if(firstCircle) {
-        firstCircle.classList.add('selected');
-        container.dataset.selectedColor = firstCircle.title;
-      }
-    });
   </script>
 
 </body>
