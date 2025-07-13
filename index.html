@@ -206,6 +206,12 @@
       <img src="https://via.placeholder.com/300x200?text=Izdelek+2" alt="Izdelek 2" loading="lazy" />
       <h2 class="text-xl font-bold mb-2">Izdelek 2</h2>
       <p class="mb-4">Moderna 3D figurica z unikatnimi detajli.</p>
+      <label for="color-1" class="block mb-2 font-semibold">Izberi barvo:</label>
+       <select id="color-1" class="mb-4 p-1 rounded">
+        <option value="Rdeča">Rdeča</option>
+        <option value="Modra">Modra</option>
+        <option value="Zelena">Zelena</option>
+       </select>
       <p class="font-semibold mb-4">Cena: 149 €</p>
       <div class="card-footer">
         <a href="izdelek2.html" class="btn">Več o izdelku</a>
@@ -225,78 +231,169 @@
     <button id="cart-send" onclick="sendOrder()">Pošlji povpraševanje</button>
   </div>
 
-  <script>
-    const cart = {};
+script>
+  const cart = {};
 
-    function addToCart(id, name, price) {
-      if(cart[id]) {
-        cart[id].qty++;
-      } else {
-        cart[id] = { name, price, qty: 1 };
-      }
+  // Dodaj izdelek s barvo
+  function addToCart(id, name, price, color = 'Ni izbrane barve') {
+    const key = `${id}-${color}`;
+    if(cart[key]) {
+      cart[key].qty++;
+    } else {
+      cart[key] = { name, price, qty: 1, color };
+    }
+    updateCartUI();
+  }
+
+  // Odstrani eno enoto
+  function removeFromCart(key) {
+    if(cart[key]) {
+      cart[key].qty--;
+      if(cart[key].qty <= 0) delete cart[key];
       updateCartUI();
     }
+  }
 
-    function removeFromCart(id) {
-      if(cart[id]) {
-        cart[id].qty--;
-        if(cart[id].qty <= 0) delete cart[id];
-      }
-      updateCartUI();
+  // Nastavi količino ročno (pri inputu)
+  function setQuantity(key, qty) {
+    qty = parseInt(qty);
+    if(isNaN(qty) || qty < 1) qty = 1;
+    cart[key].qty = qty;
+    updateCartUI();
+  }
+
+  // Spremeni barvo izdelka v košarici
+  function changeColor(oldKey, newColor) {
+    if(!cart[oldKey]) return;
+
+    const item = cart[oldKey];
+    const newKey = `${item.name}-${newColor}`.replace(/\s+/g, '-') + '-' + newColor;
+
+    // Bolje uporabiti id-barva kot key
+    // Tukaj predvidevamo, da je oldKey v formatu id-barva
+    const parts = oldKey.split('-');
+    const id = parts[0];
+    const key = `${id}-${newColor}`;
+
+    if(key === oldKey) return; // ni spremembe
+
+    if(cart[key]) {
+      // združi količine, če že obstaja
+      cart[key].qty += item.qty;
+    } else {
+      cart[key] = { name: item.name, price: item.price, qty: item.qty, color: newColor };
+    }
+    delete cart[oldKey];
+    updateCartUI();
+  }
+
+  function updateCartUI() {
+    const cartDiv = document.getElementById('cart');
+    const itemsDiv = document.getElementById('cart-items');
+    const totalDiv = document.getElementById('cart-total');
+
+    if(Object.keys(cart).length === 0) {
+      cartDiv.style.display = 'none';
+      return;
+    }
+    cartDiv.style.display = 'flex';
+
+    itemsDiv.innerHTML = '';
+    let total = 0;
+
+    for(const key in cart) {
+      const item = cart[key];
+      total += item.price * item.qty;
+
+      // div za posamezni element v košarici
+      const itemDiv = document.createElement('div');
+      itemDiv.classList.add('cart-item');
+
+      // ime + količina + barva
+      const nameSpan = document.createElement('span');
+      nameSpan.style.flex = '1';
+      nameSpan.innerHTML = `<strong>${item.name}</strong>`;
+
+      // Izbira barve (select)
+      const colorSelect = document.createElement('select');
+      ['Rdeča', 'Modra', 'Zelena'].forEach(colorOption => {
+        const opt = document.createElement('option');
+        opt.value = colorOption;
+        opt.textContent = colorOption;
+        if(colorOption === item.color) opt.selected = true;
+        colorSelect.appendChild(opt);
+      });
+      colorSelect.onchange = (e) => changeColor(key, e.target.value);
+      colorSelect.style.margin = '0 8px';
+
+      // Gumbi za količino: minus, input, plus
+      const qtyDiv = document.createElement('div');
+      qtyDiv.style.display = 'flex';
+      qtyDiv.style.alignItems = 'center';
+
+      const btnMinus = document.createElement('button');
+      btnMinus.textContent = '−';
+      btnMinus.style.fontWeight = '700';
+      btnMinus.style.marginRight = '4px';
+      btnMinus.style.cursor = 'pointer';
+      btnMinus.onclick = () => removeFromCart(key);
+
+      const qtyInput = document.createElement('input');
+      qtyInput.type = 'number';
+      qtyInput.min = '1';
+      qtyInput.value = item.qty;
+      qtyInput.style.width = '40px';
+      qtyInput.style.textAlign = 'center';
+      qtyInput.onchange = (e) => setQuantity(key, e.target.value);
+
+      const btnPlus = document.createElement('button');
+      btnPlus.textContent = '+';
+      btnPlus.style.fontWeight = '700';
+      btnPlus.style.marginLeft = '4px';
+      btnPlus.style.cursor = 'pointer';
+      btnPlus.onclick = () => {
+        cart[key].qty++;
+        updateCartUI();
+      };
+
+      qtyDiv.appendChild(btnMinus);
+      qtyDiv.appendChild(qtyInput);
+      qtyDiv.appendChild(btnPlus);
+
+      // Cena za ta element
+      const priceSpan = document.createElement('span');
+      priceSpan.textContent = (item.price * item.qty).toFixed(2) + ' €';
+      priceSpan.style.marginLeft = '12px';
+      priceSpan.style.fontWeight = '700';
+
+      // Dodamo vse elemente v itemDiv
+      itemDiv.appendChild(nameSpan);
+      itemDiv.appendChild(colorSelect);
+      itemDiv.appendChild(qtyDiv);
+      itemDiv.appendChild(priceSpan);
+
+      itemsDiv.appendChild(itemDiv);
     }
 
-    function updateCartUI() {
-      const cartDiv = document.getElementById('cart');
-      const itemsDiv = document.getElementById('cart-items');
-      const totalDiv = document.getElementById('cart-total');
+    totalDiv.textContent = `Skupaj: ${total.toFixed(2)} €`;
+  }
 
-      if(Object.keys(cart).length === 0) {
-        cartDiv.style.display = 'none';
-        return;
-      }
-      cartDiv.style.display = 'flex';
-
-      itemsDiv.innerHTML = '';
-      let total = 0;
-      for(const id in cart) {
-        const item = cart[id];
-        total += item.price * item.qty;
-
-        const itemDiv = document.createElement('div');
-        itemDiv.classList.add('cart-item');
-
-        const span = document.createElement('span');
-        span.textContent = `${item.name} x${item.qty} — ${item.price * item.qty} €`;
-
-        const btnRemove = document.createElement('button');
-        btnRemove.textContent = '×';
-        btnRemove.title = 'Odstrani eno enoto';
-        btnRemove.onclick = () => removeFromCart(id);
-
-        itemDiv.appendChild(span);
-        itemDiv.appendChild(btnRemove);
-        itemsDiv.appendChild(itemDiv);
-      }
-
-      totalDiv.textContent = `Skupaj: ${total.toFixed(2)} €`;
+  function sendOrder() {
+    if(Object.keys(cart).length === 0) {
+      alert('Košarica je prazna.');
+      return;
     }
+    let body = 'Pozdravljeni,%0D%0A%0D%0ARad/a bi oddal/a povpraševanje za naslednje 3D izdelke:%0D%0A';
 
-    function sendOrder() {
-      if(Object.keys(cart).length === 0) {
-        alert('Košarica je prazna.');
-        return;
-      }
-      let body = 'Pozdravljeni,%0D%0A%0D%0ARad/a bi oddal/a povpraševanje za naslednje 3D izdelke:%0D%0A';
-
-      for(const id in cart) {
-        const item = cart[id];
-        body += `- ${item.name} x${item.qty} (Cena na enoto: ${item.price} €)%0D%0A`;
-      }
-      body += '%0D%0ASkupna cena: ' + Object.values(cart).reduce((sum, i) => sum + i.price * i.qty, 0).toFixed(2) + ' €%0D%0A%0D%0ALep pozdrav,%0D%0A[Vaše ime]';
-
-      window.location.href = `mailto:tvojemail@example.com?subject=Povpraševanje za 3D izdelke&body=${body}`;
+    for(const key in cart) {
+      const item = cart[key];
+      body += `- ${item.name} (${item.color}) x${item.qty} (Cena na enoto: ${item.price} €)%0D%0A`;
     }
-  </script>
+    body += '%0D%0ASkupna cena: ' + Object.values(cart).reduce((sum, i) => sum + i.price * i.qty, 0).toFixed(2) + ' €%0D%0A%0D%0ALep pozdrav,%0D%0A[Vaše ime]';
+
+    window.location.href = `mailto:tvojemail@example.com?subject=Povpraševanje za 3D izdelke&body=${body}`;
+  }
+</script>
 
 </body>
 </html>
