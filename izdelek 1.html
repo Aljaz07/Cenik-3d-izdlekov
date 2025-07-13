@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Izdelek 1 - 3D Izdelki</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .text-3d {
+      color: #0ea5e9;
+      text-shadow:
+        1px 1px 0 #0369a1,
+        2px 2px 0 #0c4a6e,
+        3px 3px 0 #083344;
+    }
+    body {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #3b82f6 100%);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+    @keyframes gradientBG {
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+  </style>
+  <script>
+    function toggleTheme() {
+      document.documentElement.classList.toggle('dark');
+    }
+  </script>
+</head>
+<body class="min-h-screen text-gray-100 dark:bg-gray-900 dark:text-gray-300 transition-colors">
+
+  <header class="flex justify-between items-center p-6 bg-blue-900 bg-opacity-80 shadow-lg sticky top-0 z-50">
+    <h1 class="text-4xl font-extrabold text-3d select-none">Izdelek 1</h1>
+    <nav>
+      <a href="../index.html" class="text-blue-300 hover:text-blue-100 mr-6">Domov</a>
+      <button
+        onclick="toggleTheme()"
+        class="px-4 py-2 rounded bg-blue-500 hover:bg-blue-600 transition"
+        aria-label="Preklop teme"
+      >
+        Preklopi temo
+      </button>
+    </nav>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6">
+    <section class="mb-8">
+      <img
+        src="https://via.placeholder.com/600x400"
+        alt="Izdelek 1"
+        class="rounded-lg shadow-lg mx-auto mb-6"
+        loading="lazy"
+      />
+      <h2 class="text-3xl font-bold text-3d mb-4 text-center select-none">Eleganten 3D model z različnimi barvnimi možnostmi</h2>
+      <p class="mb-6 leading-relaxed text-center">
+        Ta izdelek je vrhunsko 3D oblikovan model z možnostjo prilagoditve barv, materialov in dizajna. Primeren je za unikatne dekoracije, predstavitve in darila.
+      </p>
+      <ul class="list-disc list-inside mb-6 max-w-md mx-auto">
+        <li>Velikost: 20x20x20 cm</li>
+        <li>Material: PLA plastika, barve po izbiri</li>
+        <li>Možnost personalizacije z gravuro</li>
+        <li>Ročno dokončano za vrhunsko kvaliteto</li>
+      </ul>
+      <p class="text-center font-bold text-lg mb-6">Cena: 99 €</p>
+      <div class="text-center">
+        <a
+          href="mailto:tvojemail@example.com?subject=Povpraševanje za Izdelek 1&body=Pozdravljeni,%0D%0AZanima me Izdelek 1.%0D%0ALep pozdrav."
+          class="inline-block bg-blue-500 hover:bg-blue-600 text-white rounded px-6 py-3 transition"
+        >
+          Pošlji povpraševanje
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="text-center p-6 mt-16 text-gray-400">
+    &copy; 2025 Tvoja 3D Produkcija. Vse pravice pridržane.
+  </footer>
+</body>
+</html>
