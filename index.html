@@ -7,17 +7,28 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    body {
+    body, html {
+      height: 100%;
+      margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #0f172a, #3b82f6, #0ea5e9);
-      background-size: 400% 400%;
-      animation: bgmove 20s ease infinite;
-      transition: background 0.5s ease;
+      color: white;
+      overflow-x: hidden;
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+      background-size: cover;
+      backdrop-filter: brightness(0.75);
     }
-    @keyframes bgmove {
-      0% {background-position: 0% 50%;}
-      50% {background-position: 100% 50%;}
-      100% {background-position: 0% 50%;}
+    .glass {
+      background: rgba(255 255 255 / 0.15);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 10px;
+      border: 1px solid rgba(255 255 255 / 0.18);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .glass:hover {
+      transform: translateY(-8px) scale(1.05);
+      box-shadow: 0 10px 40px rgba(59, 130, 246, 0.7);
     }
     .text-3d {
       font-weight: 900;
@@ -30,96 +41,62 @@
         0 8px 0 #1e40af,
         0 10px 10px rgba(0,0,0,0.5);
       user-select: none;
+      background: rgba(255 255 255 / 0.1);
+      display: inline-block;
+      padding: 0 12px;
+      border-radius: 8px;
     }
-    .card:hover {
-      transform: translateY(-8px) scale(1.05);
-      box-shadow: 0 10px 20px rgba(59, 130, 246, 0.5);
+    header p {
+      background: rgba(255 255 255 / 0.12);
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 6px;
+      margin-top: 6px;
+      color: #cbd5e1;
     }
-    /* Dark mode */
-    .dark body {
-      background: linear-gradient(135deg, #1f2937, #1e3a8a, #2563eb);
+    a.btn {
+      background-color: rgba(59, 130, 246, 0.7);
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      color: white;
+      transition: background-color 0.3s ease;
+      display: inline-block;
+      text-decoration: none;
     }
-    .dark .card {
-      background: rgba(255 255 255 / 0.05);
-      box-shadow: 0 4px 15px rgba(255 255 255 / 0.1);
-    }
-    .dark .card:hover {
-      box-shadow: 0 10px 20px rgba(147 197 253 / 0.7);
+    a.btn:hover {
+      background-color: rgba(59, 130, 246, 0.9);
     }
   </style>
-  <script>
-    function toggleTheme() {
-      document.documentElement.classList.toggle('dark');
-      localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-    }
-    window.onload = () => {
-      if (localStorage.getItem('theme') === 'dark') {
-        document.documentElement.classList.add('dark');
-      }
-    }
-  </script>
 </head>
-<body class="min-h-screen text-white">
+<body class="min-h-screen">
 
   <header class="p-6 text-center">
     <h1 class="text-3d">Cenik 3D Izdelkov</h1>
-    <p class="mt-2 text-blue-200">Izberi svoj unikatni 3D izdelek in pošlji povpraševanje</p>
-    <button
-      onclick="toggleTheme()"
-      class="mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded font-semibold transition"
-    >Preklopi temo</button>
+    <p>Izberi svoj unikatni 3D izdelek in pošlji povpraševanje</p>
   </header>
 
   <main class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
 
-    <!-- S template lahko polno generiraš izdelke -->
-    <!-- Tukaj je 50 primerov (za krajši prikaz 5 ponovljenih, potem samo copy-paste) -->
     <!-- Izdelek 1 -->
-    <div class="card bg-white bg-opacity-20 rounded-lg p-6 shadow-lg transform transition-transform duration-300 cursor-pointer">
+    <div class="glass p-6 cursor-pointer">
       <img src="https://via.placeholder.com/300x200?text=Izdelek+1" alt="Izdelek 1" class="rounded-md mb-4 mx-auto" loading="lazy" />
       <h2 class="text-xl font-bold mb-2">Izdelek 1</h2>
       <p class="mb-4">Eleganten 3D model z možnostjo barv in dizajnov.</p>
       <p class="font-semibold mb-4">Cena: 99 €</p>
-      <a href="mailto:tvojemail@example.com?subject=Povpraševanje za Izdelek 1" class="inline-block bg-blue-500 hover:bg-blue-600 rounded px-4 py-2 text-white font-semibold transition">Pošlji povpraševanje</a>
+      <a href="mailto:tvojemail@example.com?subject=Povpraševanje za Izdelek 1" class="btn">Pošlji povpraševanje</a>
     </div>
 
     <!-- Izdelek 2 -->
-    <div class="card bg-white bg-opacity-20 rounded-lg p-6 shadow-lg transform transition-transform duration-300 cursor-pointer">
+    <div class="glass p-6 cursor-pointer">
       <img src="https://via.placeholder.com/300x200?text=Izdelek+2" alt="Izdelek 2" class="rounded-md mb-4 mx-auto" loading="lazy" />
       <h2 class="text-xl font-bold mb-2">Izdelek 2</h2>
       <p class="mb-4">Moderna 3D figurica z unikatnimi detajli.</p>
       <p class="font-semibold mb-4">Cena: 149 €</p>
-      <a href="mailto:tvojemail@example.com?subject=Povpraševanje za Izdelek 2" class="inline-block bg-blue-500 hover:bg-blue-600 rounded px-4 py-2 text-white font-semibold transition">Pošlji povpraševanje</a>
+      <a href="mailto:tvojemail@example.com?subject=Povpraševanje za Izdelek 2" class="btn">Pošlji povpraševanje</a>
     </div>
 
-    <!-- Izdelek 3 -->
-    <div class="card bg-white bg-opacity-20 rounded-lg p-6 shadow-lg transform transition-transform duration-300 cursor-pointer">
-      <img src="https://via.placeholder.com/300x200?text=Izdelek+3" alt="Izdelek 3" class="rounded-md mb-4 mx-auto" loading="lazy" />
-      <h2 class="text-xl font-bold mb-2">Izdelek 3</h2>
-      <p class="mb-4">Prilagodljiv 3D model za vsak okus.</p>
-      <p class="font-semibold mb-4">Cena: 119 €</p>
-      <a href="mailto:tvojemail@example.com?subject=Povpraševanje za Izdelek 3" class="inline-block bg-blue-500 hover:bg-blue-600 rounded px-4 py-2 text-white font-semibold transition">Pošlji povpraševanje</a>
-    </div>
-
-    <!-- Izdelek 4 -->
-    <div class="card bg-white bg-opacity-20 rounded-lg p-6 shadow-lg transform transition-transform duration-300 cursor-pointer">
-      <img src="https://via.placeholder.com/300x200?text=Izdelek+4" alt="Izdelek 4" class="rounded-md mb-4 mx-auto" loading="lazy" />
-      <h2 class="text-xl font-bold mb-2">Izdelek 4</h2>
-      <p class="mb-4">3D model z detajli in možnostjo personalizacije.</p>
-      <p class="font-semibold mb-4">Cena: 89 €</p>
-      <a href="mailto:tvojemail@example.com?subject=Povpraševanje za Izdelek 4" class="inline-block bg-blue-500 hover:bg-blue-600 rounded px-4 py-2 text-white font-semibold transition">Pošlji povpraševanje</a>
-    </div>
-
-    <!-- Izdelek 5 -->
-    <div class="card bg-white bg-opacity-20 rounded-lg p-6 shadow-lg transform transition-transform duration-300 cursor-pointer">
-      <img src="https://via.placeholder.com/300x200?text=Izdelek+5" alt="Izdelek 5" class="rounded-md mb-4 mx-auto" loading="lazy" />
-      <h2 class="text-xl font-bold mb-2">Izdelek 5</h2>
-      <p class="mb-4">Unikatni 3D dizajn z več barvnimi možnostmi.</p>
-      <p class="font-semibold mb-4">Cena: 129 €</p>
-      <a href="mailto:tvojemail@example.com?subject=Povpraševanje za Izdelek 5" class="inline-block bg-blue-500 hover:bg-blue-600 rounded px-4 py-2 text-white font-semibold transition">Pošlji povpraševanje</a>
-    </div>
-
-    <!-- ... kopiraj in prilagodi do Izdelek 50 -->
+    <!-- Nadaljuj z ostalimi izdelki ... -->
 
   </main>
 
