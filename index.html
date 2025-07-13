@@ -1,346 +1,302 @@
 <!DOCTYPE html>
 <html lang="sl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>3D Izdelki z barvami in košarico</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: #fff;
-    margin: 0; padding: 20px;
-  }
-  .product-card {
-    background: rgba(255 255 255 / 0.1);
-    border-radius: 12px;
-    padding: 1rem;
-    margin-bottom: 2rem;
-    max-width: 320px;
-    box-shadow: 0 4px 12px rgb(0 0 0 / 0.3);
-  }
-  .product-card img {
-    width: 100%;
-    border-radius: 8px;
-  }
-  .btn, .btn-add {
-    background-color: #5a4fcf;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    margin-top: 0.5rem;
-    transition: background-color 0.3s ease;
-  }
-  .btn:hover, .btn-add:hover {
-    background-color: #4338ca;
-  }
-  .color-picker {
-    margin-bottom: 1em;
-  }
-  .color-circle {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    border: 2px solid transparent;
-    margin-right: 8px;
-    cursor: pointer;
-    display: inline-block;
-    transition: border-color 0.3s ease;
-  }
-  .color-circle.selected {
-    border-color: black;
-  }
-
-  /* Košarica */
-  #cart {
-    background: rgba(255 255 255 / 0.15);
-    padding: 1rem;
-    border-radius: 12px;
-    max-width: 500px;
-    margin-top: 2rem;
-    color: white;
-    display: none;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  #cart h2 {
-    margin-top: 0;
-  }
-  .cart-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: rgba(0 0 0 / 0.2);
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-  }
-  .cart-item > span {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .cart-item select {
-    background: #5a4fcf;
-    border: none;
-    color: white;
-    padding: 4px 8px;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  .cart-item button {
-    background: transparent;
-    border: 2px solid white;
-    color: white;
-    font-weight: 700;
-    border-radius: 6px;
-    cursor: pointer;
-    width: 28px;
-    height: 28px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-  }
-  .cart-item input[type=number] {
-    width: 40px;
-    text-align: center;
-    border-radius: 6px;
-    border: none;
-    padding: 4px;
-  }
-  #cart-total {
-    font-weight: 700;
-    font-size: 1.2rem;
-  }
-  #cart-send {
-    background-color: #10b981;
-    border: none;
-    color: white;
-    font-weight: 700;
-    padding: 0.7rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  #cart-send:hover {
-    background-color: #0f9f6e;
-  }
-</style>
-</head>
-<body>
-
-<h1>3D Izdelki</h1>
-
-<div class="product-card">
-  <img src="https://via.placeholder.com/300x200?text=Izdelek+1" alt="Izdelek 1" />
-  <h2>Izdelek 1</h2>
-  <p>Eleganten 3D model z možnostjo barv in dizajnov.</p>
-  <div class="color-picker" id="color-picker-1">
-    <button class="color-circle selected" style="background-color: #e74c3c;" onclick="selectColor(1, 'Rdeča', '#e74c3c', event)"></button>
-    <button class="color-circle" style="background-color: #3498db;" onclick="selectColor(1, 'Modra', '#3498db', event)"></button>
-    <button class="color-circle" style="background-color: #2ecc71;" onclick="selectColor(1, 'Zelena', '#2ecc71', event)"></button>
-  </div>
-  <input type="hidden" id="selected-color-1" value="Rdeča" />
-  <p class="font-semibold">Cena: 99 €</p>
-  <button class="btn-add" onclick="addToCart(1, 'Izdelek 1', 99, document.getElementById('selected-color-1').value)">+</button>
-</div>
-
-<div class="product-card">
-  <img src="https://via.placeholder.com/300x200?text=Izdelek+2" alt="Izdelek 2" />
-  <h2>Izdelek 2</h2>
-  <p>Še en krasen 3D izdelek z izbiro barv.</p>
-  <div class="color-picker" id="color-picker-2">
-    <button class="color-circle selected" style="background-color: #e67e22;" onclick="selectColor(2, 'Oranžna', '#e67e22', event)"></button>
-    <button class="color-circle" style="background-color: #9b59b6;" onclick="selectColor(2, 'Vijolična', '#9b59b6', event)"></button>
-    <button class="color-circle" style="background-color: #34495e;" onclick="selectColor(2, 'Temno Modra', '#34495e', event)"></button>
-  </div>
-  <input type="hidden" id="selected-color-2" value="Oranžna" />
-  <p class="font-semibold">Cena: 120 €</p>
-  <button class="btn-add" onclick="addToCart(2, 'Izdelek 2', 120, document.getElementById('selected-color-2').value)">+</button>
-</div>
-
-<!-- Košarica -->
-<div id="cart">
-  <h2>Košarica</h2>
-  <div id="cart-items"></div>
-  <div id="cart-total"></div>
-  <button id="cart-send" onclick="sendOrder()">Pošlji povpraševanje</button>
-</div>
-
-<script>
-  const cart = {};
-
-  // Barve z hex kodami za prikaz barvnih krogcev v košarici
-  const barveHex = {
-    'Rdeča': '#e74c3c',
-    'Modra': '#3498db',
-    'Zelena': '#2ecc71',
-    'Oranžna': '#e67e22',
-    'Vijolična': '#9b59b6',
-    'Temno Modra': '#34495e'
-  };
-
-  // Izbira barve - označi kliknjeno barvo in shrani vrednost
-  function selectColor(productId, colorName, colorHex, event) {
-    const container = document.getElementById(`color-picker-${productId}`);
-    [...container.children].forEach(btn => btn.classList.remove('selected'));
-
-    event.target.classList.add('selected');
-    document.getElementById(`selected-color-${productId}`).value = colorName;
-  }
-
-  function addToCart(id, name, price, color = 'Ni izbrane barve') {
-    const key = `${id}-${color}`;
-    if(cart[key]) {
-      cart[key].qty++;
-    } else {
-      cart[key] = { id, name, price, qty: 1, color };
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cenik 3D Izdelkov z košarico</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      overflow-x: hidden;
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+      background-size: cover;
+      backdrop-filter: brightness(0.75);
     }
-    updateCartUI();
-  }
+    .glass {
+      background: rgba(255 255 255 / 0.15);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 10px;
+      border: 1px solid rgba(255 255 255 / 0.18);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      padding: 16px;
+    }
+    .glass:hover {
+      transform: translateY(-8px) scale(1.05);
+      box-shadow: 0 10px 40px rgba(59, 130, 246, 0.7);
+    }
+    .text-3d {
+      font-weight: 900;
+      font-size: 3rem;
+      color: #3b82f6;
+      text-shadow:
+        0 2px 0 #2563eb,
+        0 4px 0 #1e40af,
+        0 6px 0 #1e3a8a,
+        0 8px 0 #1e40af,
+        0 10px 10px rgba(0,0,0,0.5);
+      user-select: none;
+      background: rgba(255 255 255 / 0.1);
+      display: inline-block;
+      padding: 0 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    header p {
+      background: rgba(255 255 255 / 0.12);
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 6px;
+      margin-top: 6px;
+      color: #cbd5e1;
+    }
+    a.btn {
+      background-color: rgba(59, 130, 246, 0.7);
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      color: white;
+      transition: background-color 0.3s ease;
+      display: inline-block;
+      text-decoration: none;
+      margin-left: 8px;
+    }
+    a.btn:hover {
+      background-color: rgba(59, 130, 246, 0.9);
+    }
+    img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .card-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .product-card {
+      display: flex;
+      flex-direction: column;
+    }
+    .btn-add {
+      background-color: rgba(34, 197, 94, 0.8);
+      font-weight: 700;
+      border-radius: 6px;
+      padding: 6px 12px;
+      cursor: pointer;
+      user-select: none;
+      border: none;
+      color: white;
+      transition: background-color 0.3s ease;
+      margin-left: 8px;
+    }
+    .btn-add:hover {
+      background-color: rgba(21, 128, 61, 0.9);
+    }
 
-  function removeFromCart(key) {
-    if(cart[key]) {
-      cart[key].qty--;
-      if(cart[key].qty <= 0) delete cart[key];
+    /* Košarica spodaj desno */
+    #cart {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      width: 320px;
+      max-height: 400px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #2563eb;
+      backdrop-filter: blur(8px);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      z-index: 999;
+    }
+    #cart h2 {
+      margin: 0 0 12px 0;
+      color: #3b82f6;
+      font-weight: 700;
+      text-align: center;
+      user-select: none;
+    }
+    #cart-items {
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+    #cart-items p {
+      margin: 4px 0;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255 255 255 / 0.1);
+      margin-bottom: 8px;
+      padding: 8px;
+      border-radius: 8px;
+    }
+    .cart-item span {
+      flex-grow: 1;
+    }
+    .cart-item button {
+      background: transparent;
+      border: none;
+      color: #ef4444;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 18px;
+      margin-left: 8px;
+    }
+    #cart-total {
+      font-weight: 700;
+      text-align: right;
+      margin-top: 8px;
+      font-size: 1.2rem;
+    }
+    #cart-send {
+      background-color: #3b82f6;
+      border: none;
+      border-radius: 8px;
+      padding: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 12px;
+      color: white;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    #cart-send:hover {
+      background-color: #2563eb;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <header class="p-6 text-center">
+    <h1 class="text-3d">Cenik 3D Izdelkov</h1>
+    <p>Izberi svoj unikatni 3D izdelek in pošlji povpraševanje</p>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+
+    <!-- Izdelek 1 -->
+    <div class="glass product-card p-6">
+      <img src="https://via.placeholder.com/300x200?text=Izdelek+1" alt="Izdelek 1" loading="lazy" />
+      <h2 class="text-xl font-bold mb-2">Izdelek 1</h2>
+      <p class="mb-4">Eleganten 3D model z možnostjo barv in dizajnov.</p>
+      <p class="font-semibold mb-4">Cena: 99 €</p>
+      <div class="card-footer">
+        <a href="izdelek1.html" class="btn">Več o izdelku</a>
+        <button class="btn-add" onclick="addToCart(1, 'Izdelek 1', 99)">+</button>
+      </div>
+    </div>
+
+    <!-- Izdelek 2 -->
+    <div class="glass product-card p-6">
+      <img src="https://via.placeholder.com/300x200?text=Izdelek+2" alt="Izdelek 2" loading="lazy" />
+      <h2 class="text-xl font-bold mb-2">Izdelek 2</h2>
+      <p class="mb-4">Moderna 3D figurica z unikatnimi detajli.</p>
+      <p class="font-semibold mb-4">Cena: 149 €</p>
+      <div class="card-footer">
+        <a href="izdelek2.html" class="btn">Več o izdelku</a>
+        <button class="btn-add" onclick="addToCart(2, 'Izdelek 2', 149)">+</button>
+      </div>
+    </div>
+
+    <!-- Nadaljuj z ostalimi izdelki ... -->
+
+  </main>
+
+  <!-- Košarica -->
+  <div id="cart" style="display:none;">
+    <h2>Košarica</h2>
+    <div id="cart-items"></div>
+    <div id="cart-total"></div>
+    <button id="cart-send" onclick="sendOrder()">Pošlji povpraševanje</button>
+  </div>
+
+  <script>
+    const cart = {};
+
+    function addToCart(id, name, price) {
+      if(cart[id]) {
+        cart[id].qty++;
+      } else {
+        cart[id] = { name, price, qty: 1 };
+      }
       updateCartUI();
     }
-  }
 
-  function setQuantity(key, qty) {
-    qty = parseInt(qty);
-    if(isNaN(qty) || qty < 1) qty = 1;
-    cart[key].qty = qty;
-    updateCartUI();
-  }
-
-  function changeColor(oldKey, newColor) {
-    if(!cart[oldKey]) return;
-    const item = cart[oldKey];
-    const newKey = `${item.id}-${newColor}`;
-    if(newKey === oldKey) return;
-
-    if(cart[newKey]) {
-      cart[newKey].qty += item.qty;
-    } else {
-      cart[newKey] = { id: item.id, name: item.name, price: item.price, qty: item.qty, color: newColor };
+    function removeFromCart(id) {
+      if(cart[id]) {
+        cart[id].qty--;
+        if(cart[id].qty <= 0) delete cart[id];
+      }
+      updateCartUI();
     }
-    delete cart[oldKey];
-    updateCartUI();
-  }
 
-  function updateCartUI() {
-    const cartDiv = document.getElementById('cart');
-    const itemsDiv = document.getElementById('cart-items');
-    itemsDiv.innerHTML = '';
+    function updateCartUI() {
+      const cartDiv = document.getElementById('cart');
+      const itemsDiv = document.getElementById('cart-items');
+      const totalDiv = document.getElementById('cart-total');
 
-    const keys = Object.keys(cart);
-    if(keys.length === 0) {
-      cartDiv.style.display = 'none';
-      return;
+      if(Object.keys(cart).length === 0) {
+        cartDiv.style.display = 'none';
+        return;
+      }
+      cartDiv.style.display = 'flex';
+
+      itemsDiv.innerHTML = '';
+      let total = 0;
+      for(const id in cart) {
+        const item = cart[id];
+        total += item.price * item.qty;
+
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('cart-item');
+
+        const span = document.createElement('span');
+        span.textContent = `${item.name} x${item.qty} — ${item.price * item.qty} €`;
+
+        const btnRemove = document.createElement('button');
+        btnRemove.textContent = '×';
+        btnRemove.title = 'Odstrani eno enoto';
+        btnRemove.onclick = () => removeFromCart(id);
+
+        itemDiv.appendChild(span);
+        itemDiv.appendChild(btnRemove);
+        itemsDiv.appendChild(itemDiv);
+      }
+
+      totalDiv.textContent = `Skupaj: ${total.toFixed(2)} €`;
     }
-    cartDiv.style.display = 'flex';
 
-    let total = 0;
+    function sendOrder() {
+      if(Object.keys(cart).length === 0) {
+        alert('Košarica je prazna.');
+        return;
+      }
+      let body = 'Pozdravljeni,%0D%0A%0D%0ARad/a bi oddal/a povpraševanje za naslednje 3D izdelke:%0D%0A';
 
-    keys.forEach(key => {
-      const item = cart[key];
-      total += item.price * item.qty;
+      for(const id in cart) {
+        const item = cart[id];
+        body += `- ${item.name} x${item.qty} (Cena na enoto: ${item.price} €)%0D%0A`;
+      }
+      body += '%0D%0ASkupna cena: ' + Object.values(cart).reduce((sum, i) => sum + i.price * i.qty, 0).toFixed(2) + ' €%0D%0A%0D%0ALep pozdrav,%0D%0A[Vaše ime]';
 
-      // Elementi košarice
-      const itemDiv = document.createElement('div');
-      itemDiv.className = 'cart-item';
-
-      // Ime in barvni krog
-      const nameSpan = document.createElement('span');
-      nameSpan.textContent = item.name;
-
-      const colorCircle = document.createElement('span');
-      colorCircle.style.display = 'inline-block';
-      colorCircle.style.width = '16px';
-      colorCircle.style.height = '16px';
-      colorCircle.style.borderRadius = '50%';
-      colorCircle.style.marginLeft = '8px';
-      colorCircle.style.verticalAlign = 'middle';
-      colorCircle.style.border = '1px solid #fff';
-      colorCircle.style.backgroundColor = barveHex[item.color] || '#888';
-
-      nameSpan.appendChild(colorCircle);
-      itemDiv.appendChild(nameSpan);
-
-      // Količina z inputom in gumbi
-      const qtyContainer = document.createElement('span');
-
-      const btnMinus = document.createElement('button');
-      btnMinus.textContent = '-';
-      btnMinus.onclick = () => removeFromCart(key);
-
-      const qtyInput = document.createElement('input');
-      qtyInput.type = 'number';
-      qtyInput.min = 1;
-      qtyInput.value = item.qty;
-      qtyInput.onchange = (e) => setQuantity(key, e.target.value);
-
-      const btnPlus = document.createElement('button');
-      btnPlus.textContent = '+';
-      btnPlus.onclick = () => { addToCart(item.id, item.name, item.price, item.color); };
-
-      qtyContainer.appendChild(btnMinus);
-      qtyContainer.appendChild(qtyInput);
-      qtyContainer.appendChild(btnPlus);
-      itemDiv.appendChild(qtyContainer);
-
-      // Cena
-      const priceSpan = document.createElement('span');
-      priceSpan.textContent = (item.price * item.qty).toFixed(2) + ' €';
-      priceSpan.style.minWidth = '60px';
-      itemDiv.appendChild(priceSpan);
-
-      // Sprememba barve (select z barvnimi krogci)
-      const colorSelect = document.createElement('select');
-      Object.keys(barveHex).forEach(c => {
-        const option = document.createElement('option');
-        option.value = c;
-        option.textContent = c;
-        if(c === item.color) option.selected = true;
-        colorSelect.appendChild(option);
-      });
-      colorSelect.onchange = (e) => changeColor(key, e.target.value);
-      itemDiv.appendChild(colorSelect);
-
-      itemsDiv.appendChild(itemDiv);
-    });
-
-    const totalDiv = document.getElementById('cart-total');
-    totalDiv.textContent = `Skupaj: ${total.toFixed(2)} €`;
-  }
-
-  // Funkcija za mailto pošiljanje naročila
-  function sendOrder() {
-    const keys = Object.keys(cart);
-    if(keys.length === 0) {
-      alert('Košarica je prazna!');
-      return;
+      window.location.href = `mailto:tvojemail@example.com?subject=Povpraševanje za 3D izdelke&body=${body}`;
     }
-    let message = 'Pozdravljeni,%0D%0A%0D%0AZanima me naslednji izdelek/ki:%0D%0A';
-
-    keys.forEach(key => {
-      const item = cart[key];
-      message += `- ${item.name} | Barva: ${item.color} | Količina: ${item.qty} | Cena na kos: ${item.price} €%0D%0A`;
-    });
-
-    message += `%0D%0AProsim za vašo ponudbo.%0D%0AHvala in lep pozdrav.`;
-
-    const email = 'tvoj-email@naslov.si'; // Tukaj zamenjaj z dejanskim mailom
-
-    const mailtoLink = `mailto:${email}?subject=Naročilo 3D izdelkov&body=${message}`;
-    window.location.href = mailtoLink;
-  }
-</script>
+  </script>
 
 </body>
 </html>
